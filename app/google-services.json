@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "394020093177",
+    "project_id": "phms-1ab23",
+    "storage_bucket": "phms-1ab23.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:394020093177:android:6eab984fe1824ea031f628",
+        "android_client_info": {
+          "package_name": "com.example.phms"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4abxvL-OhH2Ruf4IXfWtpmYVmQv1njjY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

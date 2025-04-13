@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_background"
+    android:gravity="center"
+    android:padding="32dp"
+    tools:context=".MainActivity">
+
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PHMS"
+            android:textColor="@color/white"
+            android:textSize="72sp"
+            android:textStyle="bold" />
+        
+        <Button
+            android:layout_width="200sp"
+            android:layout_height="wrap_content"
+            android:text="Log In"
+            android:backgroundTint="@color/white"
+            android:textColor="#FF3030"
+            android:padding="18dp"
+            android:layout_marginTop="16dp"
+            android:textSize="24sp"
+            android:id="@+id/login_button"
+            android:textStyle="bold"/>
+
+        <Button
+            android:layout_width="200sp"
+            android:layout_height="wrap_content"
+            android:text="Register"
+            android:backgroundTint="@color/white"
+            android:textColor="#FF3030"
+            android:padding="18dp"
+            android:layout_marginTop="16dp"
+            android:textSize="24sp"
+            android:id="@+id/register_button"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
