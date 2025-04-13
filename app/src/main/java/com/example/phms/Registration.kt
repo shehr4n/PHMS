@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class Registration : AppCompatActivity() {
 
@@ -52,12 +53,38 @@ class Registration : AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         val user = auth.currentUser
-                        Log.d("Register", "User created: ${auth.currentUser?.email}")
-                        val intent = Intent(this, HomePage::class.java)
-                        startActivity(intent)
+                        val db = FirebaseFirestore.getInstance()
+
+                        user?.let {
+                            val uid = it.uid
+                            val userProfile = hashMapOf(
+                                "firstName" to fnameInput.text.toString(),
+                                "lastName" to lnameInput.text.toString(),
+                                "phone" to phoneInput.text.toString(),
+                                "email" to email,
+
+                            )
+
+                            db.collection("users")
+                                .document(uid)
+                                .set(userProfile)
+                                .addOnSuccessListener {
+                                    // Profile created successfully
+                                    Log.d("Firestore", "User profile created successfully!")
+                                    val intent = Intent(this, HomePage::class.java)
+                                    startActivity(intent)
+                                }
+                                .addOnFailureListener { e ->
+                                    Log.e("Firestore", "Error writing document", e)
+                                    Toast.makeText(
+                                        baseContext,
+                                        "Error saving user profile: ${e.message}",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                        }
                     } else {
-                        // If sign in fails, display a message to the user.
-                        Log.e("Register", "Failed: ${task.exception?.message}")
+                        // Display message to user
                         Toast.makeText(
                             baseContext,
                             "Authentication failed.",
