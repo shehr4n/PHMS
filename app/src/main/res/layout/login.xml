@@ -61,6 +61,19 @@
             android:id="@+id/login_button"
             android:textStyle="bold"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Go Back"
+            android:textColor="@color/white"
+            android:background="@drawable/rounded_corner"
+            android:textSize="18sp"
+            android:paddingVertical="4dp"
+            android:paddingHorizontal="20dp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:id="@+id/back_button"/>
+
 
     </LinearLayout>
 

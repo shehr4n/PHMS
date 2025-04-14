@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +23,7 @@ class Registration : AppCompatActivity() {
     lateinit var  passwordInput : EditText
     lateinit var  confirmPasswordInput : EditText
     lateinit var  registerButton: Button
+    lateinit var  backButton: TextView
 
     lateinit var auth: FirebaseAuth
 
@@ -42,6 +44,7 @@ class Registration : AppCompatActivity() {
         passwordInput = findViewById(R.id.password)
         confirmPasswordInput = findViewById(R.id.confirm_password)
         registerButton = findViewById(R.id.register_button)
+        backButton = findViewById(R.id.back_button)
 
         auth = FirebaseAuth.getInstance()
 
@@ -92,6 +95,11 @@ class Registration : AppCompatActivity() {
                         ).show()
                     }
                 }
+        }
+
+        backButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 }

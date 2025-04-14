@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,8 @@ class Login : AppCompatActivity() {
     lateinit var  emailInput : EditText
     lateinit var  passwordInput : EditText
     lateinit var  loginButton: Button
+    lateinit var  backButton: TextView
+
 
     lateinit var auth: FirebaseAuth
 
@@ -34,6 +37,7 @@ class Login : AppCompatActivity() {
         emailInput = findViewById(R.id.email_input)
         passwordInput = findViewById(R.id.password_input)
         loginButton = findViewById(R.id.login_button)
+        backButton = findViewById(R.id.back_button)
 
         auth = FirebaseAuth.getInstance()
 
@@ -54,6 +58,11 @@ class Login : AppCompatActivity() {
                         ).show()
                     }
                 }
+        }
+
+        backButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 }
