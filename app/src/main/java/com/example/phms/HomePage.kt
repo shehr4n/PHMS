@@ -3,14 +3,19 @@ package com.example.phms
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class HomePage : AppCompatActivity() {
 
-    // lateinit var  buttonName : Button
+    lateinit var  nameText: TextView
+    lateinit var auth: FirebaseAuth
+    var db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,8 +27,28 @@ class HomePage : AppCompatActivity() {
             insets
         }
 
-        // buttonName = findViewById(R.id.button_name)
+        nameText = findViewById(R.id.nameText)
 
+        auth = FirebaseAuth.getInstance()
+
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val userId = currentUser.uid
+            db.collection("users").document(userId).get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        val name = document.getString("name") ?: "User"
+                        nameText.text = name
+                    } else {
+                        nameText.text = "User"
+                    }
+                }
+                /* .addOnFailureListener { e ->
+                    nameText.text = "Error"
+                } */
+        } /* else {
+            nameText.text = "Guest"
+        } */
 
     }
 }

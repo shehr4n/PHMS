@@ -51,6 +51,7 @@ class Registration : AppCompatActivity() {
         registerButton.setOnClickListener {
             val email = emailInput.text.toString()
             val password = passwordInput.text.toString()
+            val name = "${fnameInput.text.toString()} ${lnameInput.text.toString()}"
 
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
@@ -61,8 +62,7 @@ class Registration : AppCompatActivity() {
                         user?.let {
                             val uid = it.uid
                             val userProfile = hashMapOf(
-                                "firstName" to fnameInput.text.toString(),
-                                "lastName" to lnameInput.text.toString(),
+                                "name" to name,
                                 "phone" to phoneInput.text.toString(),
                                 "email" to email,
 
