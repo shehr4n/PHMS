@@ -14,8 +14,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 class HomePage : AppCompatActivity() {
 
     lateinit var  nameText: TextView
+    lateinit var  vitalButton: TextView
+
     lateinit var auth: FirebaseAuth
-    var db = FirebaseFirestore.getInstance() 
+    var db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +30,7 @@ class HomePage : AppCompatActivity() {
         }
 
         nameText = findViewById(R.id.nameText)
+        vitalButton = findViewById(R.id.vital_signs)
 
         auth = FirebaseAuth.getInstance()
 
@@ -50,5 +53,9 @@ class HomePage : AppCompatActivity() {
             nameText.text = "Guest"
         } */
 
+        vitalButton.setOnClickListener {
+            val intent = Intent(this, Vitals::class.java)
+            startActivity(intent)
+        }
     }
 }
