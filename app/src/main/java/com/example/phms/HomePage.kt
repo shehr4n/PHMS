@@ -15,7 +15,7 @@ class HomePage : AppCompatActivity() {
 
     lateinit var  nameText: TextView
     lateinit var auth: FirebaseAuth
-    var db = FirebaseFirestore.getInstance()
+    var db = FirebaseFirestore.getInstance() 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
