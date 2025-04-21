@@ -16,6 +16,7 @@ class HomePage : AppCompatActivity() {
     lateinit var  nameText: TextView
     lateinit var  vitalButton: TextView
     lateinit var  medButton: TextView
+    lateinit var  dietButton: TextView
 
     lateinit var auth: FirebaseAuth
     var db = FirebaseFirestore.getInstance()
@@ -33,6 +34,7 @@ class HomePage : AppCompatActivity() {
         nameText = findViewById(R.id.nameText)
         vitalButton = findViewById(R.id.vital_signs)
         medButton = findViewById(R.id.med)
+        dietButton = findViewById(R.id.placeholder3)
 
         auth = FirebaseAuth.getInstance()
 
@@ -61,6 +63,10 @@ class HomePage : AppCompatActivity() {
         }
         medButton.setOnClickListener {
             val intent = Intent(this, Medications::class.java)
+            startActivity(intent)
+        }
+        dietButton.setOnClickListener {
+            val intent = Intent(this, Diet::class.java)
             startActivity(intent)
         }
     }
