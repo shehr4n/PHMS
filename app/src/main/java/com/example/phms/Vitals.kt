@@ -19,7 +19,12 @@ data class VitalSign(
     val timestamp: Date,
     val notes: String = "",
     val isAbnormal: Boolean = false
-)
+){
+    // Empty constructor for Firebase
+    constructor() : this("", "", 0.0, Date(), "", false)
+}
+
+
 
 class Vitals : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth

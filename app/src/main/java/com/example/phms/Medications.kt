@@ -12,6 +12,19 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import androidx.appcompat.app.AlertDialog
 import android.widget.EditText
+import java.util.Date
+import java.util.UUID
+
+data class MedClass(
+    val id: String = UUID.randomUUID().toString(),
+    val name: String,
+    val dosage: String,
+    val frequency: String,
+    val notes: String = "",
+){
+    // Empty constructor for Firebase
+    constructor() : this("", "", "", "", "")
+}
 
 class Medications : AppCompatActivity() {
 
