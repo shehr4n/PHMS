@@ -28,6 +28,9 @@
         <activity 
             android:name=".Vitals"
             android:exported="true" />
+        <activity
+            android:name=".Medications"
+            android:exported="true" />
     </application>
 
 </manifest>
