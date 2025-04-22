@@ -1,0 +1,36 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText android:id="@+id/medicationName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Medication Name" />
+
+        <EditText android:id="@+id/medicationDosage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Dosage" />
+
+        <EditText android:id="@+id/medicationFrequency"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Frequency" />
+
+        <EditText android:id="@+id/medicationSideEffects"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Side Effects (optional)" />
+
+        <Button android:id="@+id/medicationTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Set Time" />
+    </LinearLayout>
+</ScrollView>
