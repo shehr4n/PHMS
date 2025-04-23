@@ -1,36 +1,56 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/medicationName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Medication Name"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/medicationDosage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="Dosage"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/medicationFrequency"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="Frequency (e.g., once daily, twice daily)"
+        android:inputType="text"
+        android:imeOptions="actionDone"/>
+
+    <EditText
+        android:id="@+id/medicationSideEffects"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="Side Effects"
+        android:inputType="textMultiLine"
+        android:minLines="2"
+        android:gravity="top"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Reminder Times"
+        android:textStyle="bold"/>
 
     <LinearLayout
-        android:orientation="vertical"
-        android:padding="16dp"
+        android:id="@+id/timeButtonsContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="8dp"/>
 
-        <EditText android:id="@+id/medicationName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Medication Name" />
-
-        <EditText android:id="@+id/medicationDosage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Dosage" />
-
-        <EditText android:id="@+id/medicationFrequency"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Frequency" />
-
-        <EditText android:id="@+id/medicationSideEffects"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Side Effects (optional)" />
-
-        <Button android:id="@+id/medicationTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Set Time" />
-    </LinearLayout>
-</ScrollView>
+</LinearLayout>

@@ -41,6 +41,7 @@
             android:exported="true" />
 
         <activity android:name=".Notes" />
+        <activity android:name=".Search" />
 
         <receiver android:name=".ReminderReceiver" />
     </application>
