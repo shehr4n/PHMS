@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">PHMS</string>
+    <string name="calories_format">%1$d calories</string>
+
+    <string name="weight_format">%1$.1f kg</string>
+    <string name="weight_not_recorded">Not recorded</string>
+
+    <plurals name="food_items_count">
+        <item quantity="one">%d food item</item>
+        <item quantity="other">%d food items</item>
+    </plurals>
+
 </resources>
