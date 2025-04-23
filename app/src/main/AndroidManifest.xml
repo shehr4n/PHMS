@@ -31,9 +31,6 @@
         <activity
             android:name=".Medications"
             android:exported="true" />
-        <activity
-            android:name=".Diet"
-            android:exported="true" />
     </application>
 
 </manifest>
