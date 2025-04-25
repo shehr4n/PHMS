@@ -110,7 +110,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Placeholder"
+                android:text="Search"
                 android:background="@drawable/rounded_corner_2"
                 android:backgroundTint="#fdba74"
                 android:textColor="@color/black"
