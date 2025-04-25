@@ -14,13 +14,11 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
 
 
-class Login : AppCompatActivity() {
+class ForgotPassword : AppCompatActivity() {
 
     lateinit var  emailInput : EditText
-    lateinit var  passwordInput : EditText
     lateinit var  loginButton: Button
     lateinit var  backButton: TextView
-    lateinit var  forgotButton: TextView
 
 
     lateinit var auth: FirebaseAuth
@@ -28,7 +26,7 @@ class Login : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.login)
+        setContentView(R.layout.forgot_password)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -36,39 +34,27 @@ class Login : AppCompatActivity() {
         }
 
         emailInput = findViewById(R.id.email_input)
-        passwordInput = findViewById(R.id.password_input)
         loginButton = findViewById(R.id.login_button)
         backButton = findViewById(R.id.back_button)
-        forgotButton = findViewById(R.id.forgot)
 
         auth = FirebaseAuth.getInstance()
 
         loginButton.setOnClickListener {
             val email = emailInput.text.toString()
-            val password = passwordInput.text.toString()
-
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
+            FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        val intent = Intent(this, HomePage::class.java)
+                        Toast.makeText(baseContext, "Reset email sent!", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this, Login::class.java)
                         startActivity(intent)
                     } else {
-                        Toast.makeText(
-                            baseContext,
-                            "Authentication failed.",
-                            Toast.LENGTH_SHORT,
-                        ).show()
+                        Toast.makeText(baseContext, task.exception?.message ?: "Error occurred", Toast.LENGTH_SHORT).show()
                     }
                 }
         }
 
         backButton.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
-
-        forgotButton.setOnClickListener {
-            val intent = Intent(this, ForgotPassword::class.java)
+            val intent = Intent(this, Login::class.java)
             startActivity(intent)
         }
     }

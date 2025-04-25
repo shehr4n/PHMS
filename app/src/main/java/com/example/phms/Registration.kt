@@ -74,7 +74,7 @@ class Registration : AppCompatActivity() {
                                 .addOnSuccessListener {
                                     // Profile created successfully
                                     Log.d("Firestore", "User profile created successfully!")
-                                    val intent = Intent(this, HomePage::class.java)
+                                    val intent = Intent(this, Registration2::class.java)
                                     startActivity(intent)
                                 }
                                 .addOnFailureListener { e ->

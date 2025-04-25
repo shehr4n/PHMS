@@ -65,7 +65,8 @@
                 android:padding="24dp"
                 android:textSize="24sp"
                 android:gravity="center"
-                android:id="@+id/vital_signs"/>
+                android:id="@+id/vital_signs"
+                />
 
             <TextView
                 android:layout_width="match_parent"

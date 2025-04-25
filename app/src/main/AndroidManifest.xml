@@ -28,7 +28,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".Login" />
+        <activity android:name=".ForgotPassword" />
         <activity android:name=".Registration" />
+        <activity android:name=".Registration2" />
         <activity android:name=".HomePage" />
         <activity 
             android:name=".Vitals"

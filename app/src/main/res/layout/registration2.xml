@@ -18,72 +18,79 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Log In"
+            android:text="Account Setup"
             android:textColor="@color/white"
             android:textSize="48sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
-        <EditText
+        <Spinner
+            android:id="@+id/gender_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:hint="Email Address"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="20sp"
             android:background="@drawable/rounded_corner"
-            android:padding="18dp"
-            android:inputType="textEmailAddress"
-            android:id="@+id/email_input"/>
+            android:paddingHorizontal="18dp"
+            android:paddingVertical="10dp"
+            android:spinnerMode="dropdown"
+            android:popupBackground="@color/white"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark"
+            android:entries="@array/gender_options"/>
+
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Password"
+            android:hint="Date of Birth"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textSize="20sp"
             android:background="@drawable/rounded_corner"
-            android:padding="18dp"
-            android:inputType="textPassword"
-            android:id="@+id/password_input"/>
+            android:paddingHorizontal="18dp"
+            android:paddingVertical="10dp"
+            android:inputType="text"
+            android:id="@+id/DOB"
+            android:focusable="false"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Height"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="20sp"
+            android:background="@drawable/rounded_corner"
+            android:paddingHorizontal="18dp"
+            android:paddingVertical="10dp"
+            android:inputType="number"
+            android:id="@+id/height"/>
+
+        <EditText
+            android:id="@+id/weight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_corner"
+            android:hint="Weight (lbs)"
+            android:inputType="number"
+            android:paddingHorizontal="18dp"
+            android:paddingVertical="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="20sp" />
 
         <Button
             android:layout_width="200sp"
             android:layout_height="wrap_content"
-            android:text="Log In"
+            android:text="Finish Setup"
             android:backgroundTint="@color/white"
             android:textColor="#FF3030"
-            android:padding="18dp"
+            android:padding="12dp"
             android:layout_marginTop="32dp"
             android:textSize="24sp"
-            android:id="@+id/login_button"
+            android:id="@+id/finish_button"
             android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Forgot Your Password?"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:id="@+id/forgot"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Go Back"
-            android:textColor="@color/white"
-            android:background="@drawable/rounded_corner"
-            android:textSize="18sp"
-            android:paddingVertical="4dp"
-            android:paddingHorizontal="20dp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"
-            android:id="@+id/back_button"/>
-
 
     </LinearLayout>
 
