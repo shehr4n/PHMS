@@ -14,7 +14,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class Account : AppCompatActivity() {
 
-    // lateinit var  nameText: TextView
+    lateinit var  nameText: TextView
+    lateinit var  nameText2: TextView
     // lateinit var accountButton: ImageView
 
     lateinit var auth: FirebaseAuth
@@ -30,11 +31,21 @@ class Account : AppCompatActivity() {
             insets
         }
 
-        // nameText = findViewById(R.id.nameText)
+        nameText = findViewById(R.id.nameText)
+        nameText2 = findViewById(R.id.nameText2)
         // accountButton = findViewById(R.id.account_button)
 
         auth = FirebaseAuth.getInstance()
 
         val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val userId = currentUser.uid
+            db.collection("users").document(userId).get()
+                .addOnSuccessListener { document ->
+                    val name = document.getString("name") ?: "User"
+                    nameText.text = name
+                    nameText2.text = name
+                }
+        }
     }
 }

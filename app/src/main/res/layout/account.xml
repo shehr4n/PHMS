@@ -62,7 +62,8 @@
                 android:paddingBottom="20dp"
                 android:text="First Last"
                 android:textColor="@color/black"
-                android:textSize="24sp"/>
+                android:textSize="24sp"
+                android:id="@+id/nameText2"/>
 
             <TextView
                 android:layout_width="match_parent"
