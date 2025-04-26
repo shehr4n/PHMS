@@ -3,6 +3,7 @@ package com.example.phms
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 class HomePage : AppCompatActivity() {
 
     lateinit var  nameText: TextView
+    lateinit var accountButton: ImageView
+
     lateinit var  vitalButton: TextView
     lateinit var  medButton: TextView
     lateinit var  notesButton: TextView
@@ -34,6 +37,8 @@ class HomePage : AppCompatActivity() {
         }
 
         nameText = findViewById(R.id.nameText)
+        accountButton = findViewById(R.id.account_button)
+
         vitalButton = findViewById(R.id.vital_signs)
         medButton = findViewById(R.id.med)
         notesButton = findViewById(R.id.notes)
@@ -60,6 +65,11 @@ class HomePage : AppCompatActivity() {
         } /* else {
             nameText.text = "Guest"
         } */
+
+        accountButton.setOnClickListener {
+            val intent = Intent(this, Account::class.java)
+            startActivity(intent)
+        }
 
         vitalButton.setOnClickListener {
             val intent = Intent(this, Vitals::class.java)

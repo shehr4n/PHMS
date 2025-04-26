@@ -32,7 +32,8 @@
         <activity android:name=".Registration" />
         <activity android:name=".Registration2" />
         <activity android:name=".HomePage" />
-        <activity 
+        <activity android:name=".Account" />
+        <activity
             android:name=".Vitals"
             android:exported="true" />
         <activity

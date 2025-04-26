@@ -34,7 +34,8 @@
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/icon_account"
-                android:layout_weight="0">
+                android:layout_weight="0"
+                android:id="@+id/account_button">
             </ImageView>
 
         </LinearLayout>
