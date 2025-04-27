@@ -15,8 +15,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 class Account : AppCompatActivity() {
 
     lateinit var  nameText: TextView
-    lateinit var  nameText2: TextView
-    // lateinit var accountButton: ImageView
+    lateinit var logoutButton: TextView
+    lateinit var backButton: ImageView
 
     lateinit var auth: FirebaseAuth
     var db = FirebaseFirestore.getInstance()
@@ -32,8 +32,8 @@ class Account : AppCompatActivity() {
         }
 
         nameText = findViewById(R.id.nameText)
-        nameText2 = findViewById(R.id.nameText2)
-        // accountButton = findViewById(R.id.account_button)
+        logoutButton = findViewById(R.id.logout_button)
+        backButton = findViewById(R.id.back_button)
 
         auth = FirebaseAuth.getInstance()
 
@@ -44,8 +44,18 @@ class Account : AppCompatActivity() {
                 .addOnSuccessListener { document ->
                     val name = document.getString("name") ?: "User"
                     nameText.text = name
-                    nameText2.text = name
                 }
+        }
+
+        backButton.setOnClickListener {
+            val intent = Intent(this, HomePage::class.java)
+            startActivity(intent)
+        }
+
+        logoutButton.setOnClickListener {
+            auth.signOut()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 }
