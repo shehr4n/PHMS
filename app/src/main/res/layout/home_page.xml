@@ -18,39 +18,39 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="16dp"
-            android:paddingHorizontal="32dp">
+            android:paddingHorizontal="32dp"
+            android:paddingVertical="16dp">
 
             <TextView
                 android:id="@+id/titleText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:text="PHMS"
-                android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="32sp"
-                android:layout_centerInParent="true" />
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/account_button"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/icon_settings"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true" />
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_settings" />
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_marginHorizontal="32dp"
             android:layout_height="1dp"
-            android:background="@color/black"/>
+            android:layout_marginHorizontal="32dp"
+            android:background="@color/black" />
 
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/icon_account"
-            android:layout_marginTop="24dp"/>
+            android:layout_marginTop="24dp"
+            android:src="@drawable/icon_account" />
 
 
         <TextView
@@ -92,103 +92,109 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:layout_marginTop="32dp">
 
-            <TextView
-                android:id="@+id/vital_signs"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded_corner_2"
-                android:backgroundTint="#fca5a5"
-                android:gravity="center"
-                android:padding="24dp"
-                android:text="Vital Signs"
-                android:textColor="@color/black"
-                android:textSize="24sp" />
+                android:layout_marginHorizontal="24dp"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/med"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/rounded_corner_2"
-                android:backgroundTint="#86efac"
-                android:gravity="center"
-                android:padding="24dp"
-                android:text="Medications"
-                android:textColor="@color/black"
-                android:textSize="24sp" />
+                <TextView
+                    android:id="@+id/vital_signs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_corner_2"
+                    android:backgroundTint="#fca5a5"
+                    android:gravity="center"
+                    android:padding="24dp"
+                    android:text="Vital Signs"
+                    android:textColor="@color/black"
+                    android:textSize="24sp" />
 
-            <TextView
-                android:id="@+id/placeholder3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/rounded_corner_2"
-                android:backgroundTint="#fde68a"
-                android:gravity="center"
-                android:padding="24dp"
-                android:text="Diet"
-                android:textColor="@color/black"
-                android:textSize="24sp" />
+                <TextView
+                    android:id="@+id/med"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/rounded_corner_2"
+                    android:backgroundTint="#86efac"
+                    android:gravity="center"
+                    android:padding="24dp"
+                    android:text="Medications"
+                    android:textColor="@color/black"
+                    android:textSize="24sp" />
 
-            <TextView
-                android:id="@+id/notes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/rounded_corner_2"
-                android:backgroundTint="#7dd3fc"
-                android:gravity="center"
-                android:padding="24dp"
-                android:text="Notes"
-                android:textColor="@color/black"
-                android:textSize="24sp" />
+                <TextView
+                    android:id="@+id/placeholder3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/rounded_corner_2"
+                    android:backgroundTint="#fde68a"
+                    android:gravity="center"
+                    android:padding="24dp"
+                    android:text="Diet"
+                    android:textColor="@color/black"
+                    android:textSize="24sp" />
 
-            <TextView
-                android:id="@+id/placeholder5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/rounded_corner_2"
-                android:backgroundTint="#fdba74"
-                android:gravity="center"
-                android:padding="24dp"
-                android:text="Search"
-                android:textColor="@color/black"
-                android:textSize="24sp" />
+                <TextView
+                    android:id="@+id/notes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/rounded_corner_2"
+                    android:backgroundTint="#7dd3fc"
+                    android:gravity="center"
+                    android:padding="24dp"
+                    android:text="Notes"
+                    android:textColor="@color/black"
+                    android:textSize="24sp" />
 
-            <TextView
-                android:id="@+id/placeholder6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/rounded_corner_2"
-                android:backgroundTint="#c4b5fd"
-                android:gravity="center"
-                android:padding="24dp"
-                android:text="Placeholder"
-                android:textColor="@color/black"
-                android:textSize="24sp" />
+                <TextView
+                    android:id="@+id/placeholder5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/rounded_corner_2"
+                    android:backgroundTint="#fdba74"
+                    android:gravity="center"
+                    android:padding="24dp"
+                    android:text="Search"
+                    android:textColor="@color/black"
+                    android:textSize="24sp" />
 
-            <TextView
-                android:id="@+id/placeholder7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/rounded_corner_2"
-                android:backgroundTint="#fda4af"
-                android:gravity="center"
-                android:padding="24dp"
-                android:text="Placeholder"
-                android:textColor="@color/black"
-                android:textSize="24sp" />
+                <TextView
+                    android:id="@+id/placeholder6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/rounded_corner_2"
+                    android:backgroundTint="#c4b5fd"
+                    android:gravity="center"
+                    android:padding="24dp"
+                    android:text="Placeholder"
+                    android:textColor="@color/black"
+                    android:textSize="24sp" />
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/placeholder7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/rounded_corner_2"
+                    android:backgroundTint="#fda4af"
+                    android:gravity="center"
+                    android:padding="24dp"
+                    android:text="Placeholder"
+                    android:textColor="@color/black"
+                    android:textSize="24sp" />
+
+            </LinearLayout>
+        </ScrollView>
 
     </LinearLayout>
 
