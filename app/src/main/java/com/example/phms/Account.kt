@@ -24,7 +24,7 @@ class Account : AppCompatActivity() {
     lateinit var  emailText: TextView
     lateinit var  phoneText: TextView
     lateinit var  passwordText: TextView
-    lateinit var logoutButton: TextView
+    lateinit var logoutButton: Button
     lateinit var backButton: ImageView
     lateinit var emergencyContactButton: Button
 
