@@ -2,10 +2,13 @@ package com.example.phms
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
+import android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
 import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +22,7 @@ class Account : AppCompatActivity() {
     lateinit var  nameText: TextView
     lateinit var  emailText: TextView
     lateinit var  phoneText: TextView
+    lateinit var  passwordText: TextView
     lateinit var logoutButton: TextView
     lateinit var backButton: ImageView
 
@@ -38,6 +42,7 @@ class Account : AppCompatActivity() {
         nameText = findViewById(R.id.nameText)
         emailText = findViewById(R.id.emailText)
         phoneText = findViewById(R.id.phoneText)
+        passwordText = findViewById(R.id.passwordText)
         logoutButton = findViewById(R.id.logout_button)
         backButton = findViewById(R.id.back_button)
 
@@ -124,6 +129,42 @@ class Account : AppCompatActivity() {
                     if (newPhone.isNotEmpty()) {
                         updateInFirestore(newPhone, "phone")
                         phoneText.text = newPhone
+                    }
+                }
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.cancel()
+                }
+                .show()
+        }
+
+        passwordText.setOnClickListener {
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog2, null)
+            val input1 = dialogView.findViewById<EditText>(R.id.input_1)
+            val input2 = dialogView.findViewById<EditText>(R.id.input_2)
+            input1.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            input2.inputType = input1.inputType
+            input1.hint = "New Password"
+            input2.hint = "Confirm New Password"
+
+            AlertDialog.Builder(this)
+                .setTitle("Change Password")
+                .setView(dialogView)
+                .setPositiveButton("Save") { dialog, _ ->
+                    val newPW = input1.text.toString().trim()
+                    if (newPW == input2.text.toString().trim()) {
+                        currentUser?.updatePassword(newPW)
+                            ?.addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    // Password updated successfully
+                                    Toast.makeText(this, "Password updated successfully", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    // Handle error (e.g., weak password)
+                                    Toast.makeText(this, "Error updating password", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                    }
+                    else {
+                        Toast.makeText(this, "Password inputs do not match", Toast.LENGTH_SHORT).show()
                     }
                 }
                 .setNegativeButton("Cancel") { dialog, _ ->
