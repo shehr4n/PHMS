@@ -3,7 +3,6 @@ package com.example.phms
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -64,18 +63,67 @@ class Account : AppCompatActivity() {
         }
 
         nameText.setOnClickListener {
-            val dialogView = LayoutInflater.from(this).inflate(R.layout._edit_name, null)
-            val newF = dialogView.findViewById<EditText>(R.id.new_f)
-            val newL = dialogView.findViewById<EditText>(R.id.new_l)
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog2, null)
+            val input1 = dialogView.findViewById<EditText>(R.id.input_1)
+            val input2 = dialogView.findViewById<EditText>(R.id.input_2)
+            input1.hint = "First Name"
+            input2.hint = "Last Name"
+            val nameParts = nameText.text.toString().trim().split(" ")
+            input1.setText(nameParts[0])
+            input2.setText(nameParts[1])
 
             AlertDialog.Builder(this)
                 .setTitle("Edit Name")
                 .setView(dialogView)
                 .setPositiveButton("Save") { dialog, _ ->
-                    val newFName = newF.text.toString().trim()
-                    val newLName = newL.text.toString().trim()
+                    val newFName = input1.text.toString().trim()
+                    val newLName = input2.text.toString().trim()
+                    val fullName = "$newFName $newLName"
                     if (newFName.isNotEmpty()) {
-                        updateNameInFirestore(newFName, newLName)
+                        updateInFirestore(fullName, "name")
+                        nameText.text = fullName
+                    }
+                }
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.cancel()
+                }
+                .show()
+        }
+
+        emailText.setOnClickListener {
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog1, null)
+            val input = dialogView.findViewById<EditText>(R.id.input)
+            input.hint = "Email"
+            input.setText(emailText.text)
+            AlertDialog.Builder(this)
+                .setTitle("Edit Email")
+                .setView(dialogView)
+                .setPositiveButton("Save") { dialog, _ ->
+                    val newEmail = input.text.toString().trim()
+                    if (newEmail.isNotEmpty()) {
+                        updateInFirestore(newEmail, "email")
+                        emailText.text = newEmail
+                    }
+                }
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.cancel()
+                }
+                .show()
+        }
+
+        phoneText.setOnClickListener {
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog1, null)
+            val input = dialogView.findViewById<EditText>(R.id.input)
+            input.hint = "Phone Number"
+            input.setText(phoneText.text)
+            AlertDialog.Builder(this)
+                .setTitle("Edit Phone Number")
+                .setView(dialogView)
+                .setPositiveButton("Save") { dialog, _ ->
+                    val newPhone = input.text.toString().trim()
+                    if (newPhone.isNotEmpty()) {
+                        updateInFirestore(newPhone, "phone")
+                        phoneText.text = newPhone
                     }
                 }
                 .setNegativeButton("Cancel") { dialog, _ ->
@@ -90,17 +138,17 @@ class Account : AppCompatActivity() {
             startActivity(intent)
         }
     }
-    private fun updateNameInFirestore(firstName: String, lastName: String) {
+
+    private fun updateInFirestore(newStr: String, field: String) {
         val userId = auth.currentUser?.uid
         if (userId != null) {
-            val fullName = "$firstName $lastName"
             db.collection("users").document(userId)
-                .update("name", fullName)
+                .update(field, newStr)
                 .addOnSuccessListener {
-                    nameText.text = fullName
+                    // Handle
                 }
                 .addOnFailureListener { e ->
-                    // Handle error (like showing a Toast)
+                    // Handle error
                 }
         }
     }
