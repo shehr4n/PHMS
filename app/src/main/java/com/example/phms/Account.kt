@@ -2,8 +2,12 @@ package com.example.phms
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
+import android.text.InputType
+import android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
+import android.view.LayoutInflater
+import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -16,21 +20,16 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class Account : AppCompatActivity() {
 
-    // UI Components
-    private lateinit var nameText: TextView
-    private lateinit var userEmailText: TextView
-    private lateinit var firstNameText: TextView
-    private lateinit var lastNameText: TextView
-    private lateinit var phoneText: TextView
-    private lateinit var dobText: TextView
-    private lateinit var editProfileButton: Button
-    private lateinit var logoutButton: Button
-    private lateinit var emergencyContactButton: Button
+    lateinit var  nameText: TextView
+    lateinit var  emailText: TextView
+    lateinit var  phoneText: TextView
+    lateinit var  passwordText: TextView
+    lateinit var logoutButton: TextView
+    lateinit var backButton: ImageView
+    lateinit var emergencyContactButton: Button
 
-    // Firebase
-    private lateinit var auth: FirebaseAuth
-    private var db = FirebaseFirestore.getInstance()
-    private var userId = ""
+    lateinit var auth: FirebaseAuth
+    var db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,180 +41,164 @@ class Account : AppCompatActivity() {
             insets
         }
 
-        // Initialize Firebase
+        nameText = findViewById(R.id.nameText)
+        emailText = findViewById(R.id.emailText)
+        phoneText = findViewById(R.id.phoneText)
+        passwordText = findViewById(R.id.passwordText)
+        logoutButton = findViewById(R.id.logout_button)
+        backButton = findViewById(R.id.back_button)
+        emergencyContactButton = findViewById(R.id.emergencyContactButton)
+
         auth = FirebaseAuth.getInstance()
-        userId = auth.currentUser?.uid ?: ""
-        
-        if (userId.isEmpty()) {
-            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
-            navigateToLogin()
-            return
+
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val userId = currentUser.uid
+            db.collection("users").document(userId).get()
+                .addOnSuccessListener { document ->
+                    val name = document.getString("name") ?: "User"
+                    nameText.text = name
+                    val email = document.getString("email") ?: "User"
+                    emailText.text = email
+                    val phone = document.getString("phone") ?: "User"
+                    phoneText.text = phone
+                }
         }
 
-        // Initialize UI components
-        initializeViews()
-        
-        // Set up button click listeners
-        setupClickListeners()
-        
-        // Load user data
-        loadUserData()
-    }
-    
-    private fun initializeViews() {
-        nameText = findViewById(R.id.nameText)
-        userEmailText = findViewById(R.id.userEmailText)
-        firstNameText = findViewById(R.id.firstNameText)
-        lastNameText = findViewById(R.id.lastNameText)
-        phoneText = findViewById(R.id.phoneText)
-        dobText = findViewById(R.id.dobText)
-        editProfileButton = findViewById(R.id.editProfileButton)
-        logoutButton = findViewById(R.id.logoutButton)
-        emergencyContactButton = findViewById(R.id.emergencyContactButton)
-        
-        // Display user email
-        userEmailText.text = auth.currentUser?.email ?: "Not signed in"
-    }
-    
-    private fun setupClickListeners() {
-        logoutButton.setOnClickListener {
-            auth.signOut()
-            navigateToLogin()
+        backButton.setOnClickListener {
+            val intent = Intent(this, HomePage::class.java)
+            startActivity(intent)
+        }
+
+        nameText.setOnClickListener {
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog2, null)
+            val input1 = dialogView.findViewById<EditText>(R.id.input_1)
+            val input2 = dialogView.findViewById<EditText>(R.id.input_2)
+            input1.hint = "First Name"
+            input2.hint = "Last Name"
+            val nameParts = nameText.text.toString().trim().split(" ")
+            input1.setText(nameParts[0])
+            input2.setText(nameParts[1])
+
+            AlertDialog.Builder(this)
+                .setTitle("Edit Name")
+                .setView(dialogView)
+                .setPositiveButton("Save") { dialog, _ ->
+                    val newFName = input1.text.toString().trim()
+                    val newLName = input2.text.toString().trim()
+                    val fullName = "$newFName $newLName"
+                    if (newFName.isNotEmpty()) {
+                        updateInFirestore(fullName, "name")
+                        nameText.text = fullName
+                    }
+                }
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.cancel()
+                }
+                .show()
+        }
+
+        emailText.setOnClickListener {
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog1, null)
+            val input = dialogView.findViewById<EditText>(R.id.input)
+            input.hint = "Email"
+            input.setText(emailText.text)
+            AlertDialog.Builder(this)
+                .setTitle("Edit Email")
+                .setView(dialogView)
+                .setPositiveButton("Save") { dialog, _ ->
+                    val newEmail = input.text.toString().trim()
+                    if (newEmail.isNotEmpty()) {
+                        updateInFirestore(newEmail, "email")
+                        emailText.text = newEmail
+                    }
+                }
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.cancel()
+                }
+                .show()
+        }
+
+        phoneText.setOnClickListener {
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog1, null)
+            val input = dialogView.findViewById<EditText>(R.id.input)
+            input.hint = "Phone Number"
+            input.setText(phoneText.text)
+            AlertDialog.Builder(this)
+                .setTitle("Edit Phone Number")
+                .setView(dialogView)
+                .setPositiveButton("Save") { dialog, _ ->
+                    val newPhone = input.text.toString().trim()
+                    if (newPhone.isNotEmpty()) {
+                        updateInFirestore(newPhone, "phone")
+                        phoneText.text = newPhone
+                    }
+                }
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.cancel()
+                }
+                .show()
+        }
+
+        passwordText.setOnClickListener {
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog2, null)
+            val input1 = dialogView.findViewById<EditText>(R.id.input_1)
+            val input2 = dialogView.findViewById<EditText>(R.id.input_2)
+            input1.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            input2.inputType = input1.inputType
+            input1.hint = "New Password"
+            input2.hint = "Confirm New Password"
+
+            AlertDialog.Builder(this)
+                .setTitle("Change Password")
+                .setView(dialogView)
+                .setPositiveButton("Save") { dialog, _ ->
+                    val newPW = input1.text.toString().trim()
+                    if (newPW == input2.text.toString().trim()) {
+                        currentUser?.updatePassword(newPW)
+                            ?.addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    // Password updated successfully
+                                    Toast.makeText(this, "Password updated successfully", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    // Handle error (e.g., weak password)
+                                    Toast.makeText(this, "Error updating password", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                    }
+                    else {
+                        Toast.makeText(this, "Password inputs do not match", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.cancel()
+                }
+                .show()
         }
 
         emergencyContactButton.setOnClickListener {
             val intent = Intent(this, EmergencyContactActivity::class.java)
             startActivity(intent)
         }
-        
-        editProfileButton.setOnClickListener {
-            showEditProfileDialog()
+
+        logoutButton.setOnClickListener {
+            auth.signOut()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
-    
-    private fun loadUserData() {
-        db.collection("users").document(userId).get()
-            .addOnSuccessListener { document ->
-                if (document != null && document.exists()) {
-                    // Get full name from name field if it exists
-                    val fullName = document.getString("name") ?: "User"
-                    nameText.text = fullName
-                    
-                    // Try to get firstName and lastName directly first
-                    var firstName = document.getString("firstName") ?: ""
-                    var lastName = document.getString("lastName") ?: ""
-                    
-                    // If firstName or lastName is missing, try to extract from full name
-                    if (firstName.isEmpty() || lastName.isEmpty()) {
-                        val nameParts = fullName.split(" ")
-                        if (nameParts.size >= 2) {
-                            // If name has at least two parts, use first as firstName and rest as lastName
-                            firstName = nameParts[0]
-                            lastName = nameParts.subList(1, nameParts.size).joinToString(" ")
-                        } else if (nameParts.size == 1) {
-                            // If name has only one part, use it as firstName
-                            firstName = nameParts[0]
-                        }
-                        
-                        // Save these extracted names back to Firestore for future use
-                        if (firstName.isNotEmpty() || lastName.isNotEmpty()) {
-                            val updates = hashMapOf<String, Any>()
-                            if (firstName.isNotEmpty()) updates["firstName"] = firstName
-                            if (lastName.isNotEmpty()) updates["lastName"] = lastName
-                            
-                            if (updates.isNotEmpty()) {
-                                db.collection("users").document(userId).update(updates)
-                                    .addOnFailureListener { e ->
-                                        Log.e("Account", "Failed to update firstName/lastName: ${e.message}")
-                                    }
-                            }
-                        }
-                    }
-                    
-                    // Display values in UI
-                    firstNameText.text = firstName
-                    lastNameText.text = lastName
-                    phoneText.text = document.getString("phone") ?: "Not provided"
-                    dobText.text = document.getString("dob") ?: "Not provided"
-                    
-                    // Log for debugging
-                    Log.d("Account", "Loaded data: firstName=$firstName, lastName=$lastName")
+
+    private fun updateInFirestore(newStr: String, field: String) {
+        val userId = auth.currentUser?.uid
+        if (userId != null) {
+            db.collection("users").document(userId)
+                .update(field, newStr)
+                .addOnSuccessListener {
+                    // Handle
                 }
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Error loading user data: ${e.message}", Toast.LENGTH_SHORT).show()
-                Log.e("Account", "Error loading user data", e)
-            }
-    }
-    
-    private fun showEditProfileDialog() {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_edit_profile, null)
-        
-        val firstNameInput = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.firstNameEditText)
-        val lastNameInput = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.lastNameEditText)
-        val phoneInput = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.phoneEditText)
-        val dobInput = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.dobEditText)
-        
-        // Pre-populate with existing data
-        firstNameInput.setText(firstNameText.text)
-        lastNameInput.setText(lastNameText.text)
-        phoneInput.setText(phoneText.text.toString().takeIf { it != "Not provided" } ?: "")
-        dobInput.setText(dobText.text.toString().takeIf { it != "Not provided" } ?: "")
-        
-        // Create dialog with custom view
-        val dialog = AlertDialog.Builder(this)
-            .setTitle("Update Profile")
-            .setView(dialogView)
-            .setCancelable(true)
-            .create()
-            
-        // Set up the Cancel button click listener
-        dialogView.findViewById<Button>(R.id.cancelButton).setOnClickListener {
-            dialog.dismiss()
+                .addOnFailureListener { e ->
+                    // Handle error
+                }
         }
-            
-        // Set up the Update button click listener
-        dialogView.findViewById<Button>(R.id.saveButton).setOnClickListener {
-            val updatedFirstName = firstNameInput.text.toString().trim()
-            val updatedLastName = lastNameInput.text.toString().trim()
-            val updatedPhone = phoneInput.text.toString().trim()
-            val updatedDob = dobInput.text.toString().trim()
-            
-            if (updatedFirstName.isEmpty() || updatedLastName.isEmpty()) {
-                Toast.makeText(this, "First name and last name are required", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            
-            updateUserProfile(updatedFirstName, updatedLastName, updatedPhone, updatedDob)
-            dialog.dismiss()
-        }
-        
-        dialog.show()
-    }
-    
-    private fun updateUserProfile(firstName: String, lastName: String, phone: String, dob: String) {
-        val userUpdates = hashMapOf(
-            "firstName" to firstName,
-            "lastName" to lastName,
-            "phone" to phone,
-            "dob" to dob
-        )
-        
-        db.collection("users").document(userId)
-            .update(userUpdates as Map<String, Any>)
-            .addOnSuccessListener {
-                Toast.makeText(this, "Profile updated successfully", Toast.LENGTH_SHORT).show()
-                loadUserData() // Reload the UI with updated data
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Failed to update profile: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-    }
-    
-    private fun navigateToLogin() {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
-        finish()
     }
 }

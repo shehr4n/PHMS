@@ -7,147 +7,194 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:gravity="center"
-    android:paddingHorizontal="24dp"
-    android:paddingTop="48dp"
     tools:context=".MainActivity">
 
-    <LinearLayout android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="32dp"
+            android:paddingVertical="16dp">
+
+            <TextView
+                android:id="@+id/titleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="PHMS"
+                android:textColor="@color/black"
+                android:textSize="32sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/account_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_settings" />
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="32dp"
+            android:background="@color/black" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/icon_account" />
+
+
+        <TextView
+            android:id="@+id/nameText"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="1"
-            android:paddingLeft="12dp">
+            android:text="First Last"
+            android:textColor="@color/black"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hello,"
-                android:textColor="@color/black"
-                android:textSize="40sp"
-                android:layout_weight="1"/>
-            
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/icon_account"
-                android:layout_weight="0"
-                android:id="@+id/account_button">
-            </ImageView>
+                android:text="00"
+                android:textColor="#71717a"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="  |  "
+                android:textColor="#71717a"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="M/F"
+                android:textColor="#71717a"
+                android:textSize="20sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
-        <TextView
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="12dp"
-            android:text="First Last"
-            android:textColor="@color/black"
-            android:textSize="40sp"
-            android:textStyle="bold"
-            android:id="@+id/nameText"/>
+            android:layout_height="match_parent"
+            android:layout_marginTop="32dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:orientation="vertical">
-
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Vital Signs"
-                android:background="@drawable/rounded_corner_2"
-                android:backgroundTint="#fca5a5"
-                android:textColor="@color/black"
-                android:padding="24dp"
-                android:textSize="24sp"
-                android:gravity="center"
-                android:id="@+id/vital_signs"
-                />
+                android:layout_marginHorizontal="24dp"
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Medications"
-                android:background="@drawable/rounded_corner_2"
-                android:backgroundTint="#86efac"
-                android:textColor="@color/black"
-                android:padding="24dp"
-                android:layout_marginTop="12dp"
-                android:textSize="24sp"
-                android:gravity="center"
-                android:id="@+id/med"/>
+                <TextView
+                    android:id="@+id/vital_signs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_corner_2"
+                    android:backgroundTint="#fca5a5"
+                    android:gravity="center"
+                    android:padding="24dp"
+                    android:text="Vital Signs"
+                    android:textColor="@color/black"
+                    android:textSize="24sp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Diet"
-                android:background="@drawable/rounded_corner_2"
-                android:backgroundTint="#fde68a"
-                android:textColor="@color/black"
-                android:padding="24dp"
-                android:layout_marginTop="12dp"
-                android:textSize="24sp"
-                android:gravity="center"
-                android:id="@+id/placeholder3"/>
+                <TextView
+                    android:id="@+id/med"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/rounded_corner_2"
+                    android:backgroundTint="#86efac"
+                    android:gravity="center"
+                    android:padding="24dp"
+                    android:text="Medications"
+                    android:textColor="@color/black"
+                    android:textSize="24sp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Notes"
-                android:background="@drawable/rounded_corner_2"
-                android:backgroundTint="#7dd3fc"
-                android:textColor="@color/black"
-                android:padding="24dp"
-                android:layout_marginTop="12dp"
-                android:textSize="24sp"
-                android:gravity="center"
-                android:id="@+id/notes" />
+                <TextView
+                    android:id="@+id/placeholder3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/rounded_corner_2"
+                    android:backgroundTint="#fde68a"
+                    android:gravity="center"
+                    android:padding="24dp"
+                    android:text="Diet"
+                    android:textColor="@color/black"
+                    android:textSize="24sp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Search"
-                android:background="@drawable/rounded_corner_2"
-                android:backgroundTint="#fdba74"
-                android:textColor="@color/black"
-                android:padding="24dp"
-                android:layout_marginTop="12dp"
-                android:textSize="24sp"
-                android:gravity="center"
-                android:id="@+id/placeholder5"/>
+                <TextView
+                    android:id="@+id/notes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/rounded_corner_2"
+                    android:backgroundTint="#7dd3fc"
+                    android:gravity="center"
+                    android:padding="24dp"
+                    android:text="Notes"
+                    android:textColor="@color/black"
+                    android:textSize="24sp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Placeholder"
-                android:background="@drawable/rounded_corner_2"
-                android:backgroundTint="#c4b5fd"
-                android:textColor="@color/black"
-                android:padding="24dp"
-                android:layout_marginTop="12dp"
-                android:textSize="24sp"
-                android:gravity="center"
-                android:id="@+id/placeholder6"/>
+                <TextView
+                    android:id="@+id/placeholder5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/rounded_corner_2"
+                    android:backgroundTint="#fdba74"
+                    android:gravity="center"
+                    android:padding="24dp"
+                    android:text="Search"
+                    android:textColor="@color/black"
+                    android:textSize="24sp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Placeholder"
-                android:background="@drawable/rounded_corner_2"
-                android:backgroundTint="#fda4af"
-                android:textColor="@color/black"
-                android:padding="24dp"
-                android:layout_marginTop="12dp"
-                android:textSize="24sp"
-                android:gravity="center"
-                android:id="@+id/placeholder7"/>
+                <TextView
+                    android:id="@+id/placeholder6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/rounded_corner_2"
+                    android:backgroundTint="#c4b5fd"
+                    android:gravity="center"
+                    android:padding="24dp"
+                    android:text="Placeholder"
+                    android:textColor="@color/black"
+                    android:textSize="24sp" />
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/placeholder7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/rounded_corner_2"
+                    android:backgroundTint="#fda4af"
+                    android:gravity="center"
+                    android:padding="24dp"
+                    android:text="Placeholder"
+                    android:textColor="@color/black"
+                    android:textSize="24sp" />
+
+            </LinearLayout>
+        </ScrollView>
 
     </LinearLayout>
 
