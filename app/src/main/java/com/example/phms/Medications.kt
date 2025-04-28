@@ -18,6 +18,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresPermission
 import java.util.Calendar
+import java.text.SimpleDateFormat
 
 
 data class Medication(
@@ -41,6 +42,8 @@ class Medications : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var medList: RecyclerView
     private lateinit var addMedButton: Button
+    private lateinit var viewHistoryButton: Button
+    private lateinit var testReminderButton: Button
     private lateinit var adapter: MedicationAdapter
     private val medications = mutableListOf<Medication>()
 
@@ -53,6 +56,8 @@ class Medications : AppCompatActivity() {
 
         medList = findViewById(R.id.medicationList)
         addMedButton = findViewById(R.id.addMedicationButton)
+        viewHistoryButton = findViewById(R.id.viewMedicationHistoryButton)
+        testReminderButton = findViewById(R.id.testReminderButton)
 
         adapter = MedicationAdapter(medications,
             onEdit = { showMedicationDialog(it) },
@@ -64,8 +69,99 @@ class Medications : AppCompatActivity() {
         addMedButton.setOnClickListener {
             showMedicationDialog(null)
         }
+        
+        viewHistoryButton.setOnClickListener {
+            viewMedicationHistory()
+        }
+        
+        testReminderButton.setOnClickListener {
+            sendTestReminder()
+        }
 
         loadMedications()
+    }
+
+    private fun sendTestReminder() {
+        if (medications.isEmpty()) {
+            Toast.makeText(this, "Add a medication first", Toast.LENGTH_SHORT).show()
+            return
+        }
+        
+        val medication = medications[0]
+        
+        // Use MedicationMonitor's debug function for immediate and scheduled reminders
+        val monitor = MedicationMonitor(this)
+        monitor.scheduleDebugReminder(medication)
+        
+        // Log notification for history
+        val userId = auth.currentUser?.uid
+        if (userId != null) {
+            val log = hashMapOf(
+                "medicationId" to medication.id,
+                "medicationName" to medication.name,
+                "reminderTime" to SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()),
+                "timestamp" to Date(),
+                "status" to "notification_sent"
+            )
+            
+            db.collection("users").document(userId)
+                .collection("medicationLogs")
+                .add(log)
+        }
+    }
+    
+    private fun viewMedicationHistory() {
+        val user = auth.currentUser ?: return
+        
+        db.collection("users").document(user.uid)
+            .collection("medicationLogs")
+            .orderBy("timestamp", com.google.firebase.firestore.Query.Direction.DESCENDING)
+            .limit(20)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (documents.isEmpty) {
+                    Toast.makeText(this, "No medication history found", Toast.LENGTH_SHORT).show()
+                    return@addOnSuccessListener
+                }
+                
+                val historyItems = mutableListOf<String>()
+                for (doc in documents) {
+                    val medicationId = doc.getString("medicationId") ?: continue
+                    val status = doc.getString("status") ?: continue
+                    val timestamp = doc.getTimestamp("timestamp")?.toDate() ?: continue
+                    val dateStr = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(timestamp)
+                    
+                    // Find medication name
+                    var medicationName = doc.getString("medicationName") ?: ""
+                    if (medicationName.isEmpty()) {
+                        for (med in medications) {
+                            if (med.id == medicationId) {
+                                medicationName = med.name
+                                break
+                            }
+                        }
+                    }
+                    
+                    val statusText = when(status) {
+                        "taken" -> "✅ Taken"
+                        "missed" -> "❌ Missed"
+                        "skipped" -> "⏭️ Skipped"
+                        else -> status
+                    }
+                    
+                    historyItems.add("$dateStr - $medicationName: $statusText")
+                }
+                
+                // Show history dialog
+                AlertDialog.Builder(this)
+                    .setTitle("Medication History")
+                    .setItems(historyItems.toTypedArray(), null)
+                    .setPositiveButton("OK", null)
+                    .show()
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Error loading history", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun loadMedications() {
@@ -195,8 +291,11 @@ class Medications : AppCompatActivity() {
             .addOnSuccessListener {
                 loadMedications()
                 Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show()
-                scheduleReminder(medication)
-
+                
+                // Initialize monitoring for the medication
+                val monitor = MedicationMonitor(this)
+                monitor.scheduleReminders(medication)
+                monitor.checkMedicationConflicts(medication)
             }
     }
 
