@@ -2,6 +2,7 @@ package com.example.phms
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.text.InputType
 import android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
 import android.view.LayoutInflater
@@ -25,6 +26,7 @@ class Account : AppCompatActivity() {
     lateinit var  passwordText: TextView
     lateinit var logoutButton: TextView
     lateinit var backButton: ImageView
+    lateinit var emergencyContactButton: Button
 
     lateinit var auth: FirebaseAuth
     var db = FirebaseFirestore.getInstance()
@@ -45,6 +47,7 @@ class Account : AppCompatActivity() {
         passwordText = findViewById(R.id.passwordText)
         logoutButton = findViewById(R.id.logout_button)
         backButton = findViewById(R.id.back_button)
+        emergencyContactButton = findViewById(R.id.emergencyContactButton)
 
         auth = FirebaseAuth.getInstance()
 
@@ -171,6 +174,11 @@ class Account : AppCompatActivity() {
                     dialog.cancel()
                 }
                 .show()
+        }
+
+        emergencyContactButton.setOnClickListener {
+            val intent = Intent(this, EmergencyContactActivity::class.java)
+            startActivity(intent)
         }
 
         logoutButton.setOnClickListener {
