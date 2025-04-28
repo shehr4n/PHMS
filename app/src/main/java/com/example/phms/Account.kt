@@ -17,41 +17,19 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import android.Manifest
-import android.content.pm.PackageManager
-import android.location.Address
-import android.location.Geocoder
-import android.location.Location
-import android.net.Uri
-import androidx.core.app.ActivityCompat
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import java.text.SimpleDateFormat
-import java.util.*
 
 class Account : AppCompatActivity() {
 
-    private lateinit var backButton: ImageView
-    private lateinit var titleText: TextView
-    private lateinit var nameText: TextView
-    private lateinit var emailText: TextView
-    private lateinit var phoneText: TextView
-    private lateinit var dobText: TextView
-    private lateinit var passwordText: TextView
-    private lateinit var emergencyContactButton: Button
-    private lateinit var logoutButton: Button
-    private lateinit var shareLocationButton: Button
-    private lateinit var viewDoctorLocationButton: Button
-    private lateinit var lastLocationText: TextView
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private var lastLocation: Location? = null
-    private var lastAddress: String? = null
-    private var lastLocationTimestamp: Long? = null
-    private val LOCATION_PERMISSION_REQUEST = 1001
+    lateinit var  nameText: TextView
+    lateinit var  emailText: TextView
+    lateinit var  phoneText: TextView
+    lateinit var  passwordText: TextView
+    lateinit var logoutButton: Button
+    lateinit var backButton: ImageView
+    lateinit var emergencyContactButton: Button
 
     lateinit var auth: FirebaseAuth
     var db = FirebaseFirestore.getInstance()
-    private lateinit var userId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,67 +41,151 @@ class Account : AppCompatActivity() {
             insets
         }
 
-        backButton = findViewById(R.id.back_button)
-        titleText = findViewById(R.id.titleText)
         nameText = findViewById(R.id.nameText)
         emailText = findViewById(R.id.emailText)
         phoneText = findViewById(R.id.phoneText)
-        dobText = findViewById(R.id.dob)
         passwordText = findViewById(R.id.passwordText)
-        emergencyContactButton = findViewById(R.id.emergencyContactButton)
         logoutButton = findViewById(R.id.logout_button)
-        shareLocationButton = findViewById(R.id.shareLocationButton)
-        viewDoctorLocationButton = findViewById(R.id.viewDoctorLocationButton)
-        lastLocationText = findViewById(R.id.lastLocationText)
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        backButton = findViewById(R.id.back_button)
+        emergencyContactButton = findViewById(R.id.emergencyContactButton)
 
         auth = FirebaseAuth.getInstance()
-        userId = auth.currentUser?.uid ?: ""
-        if (userId.isEmpty()) {
-            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
-            navigateToLogin()
-            return
+
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val userId = currentUser.uid
+            db.collection("users").document(userId).get()
+                .addOnSuccessListener { document ->
+                    val name = document.getString("name") ?: "User"
+                    nameText.text = name
+                    val email = document.getString("email") ?: "User"
+                    emailText.text = email
+                    val phone = document.getString("phone") ?: "User"
+                    phoneText.text = phone
+                }
         }
 
-        logoutButton.setOnClickListener {
-            auth.signOut()
-            navigateToLogin()
+        backButton.setOnClickListener {
+            val intent = Intent(this, HomePage::class.java)
+            startActivity(intent)
         }
+
+        nameText.setOnClickListener {
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog2, null)
+            val input1 = dialogView.findViewById<EditText>(R.id.input_1)
+            val input2 = dialogView.findViewById<EditText>(R.id.input_2)
+            input1.hint = "First Name"
+            input2.hint = "Last Name"
+            val nameParts = nameText.text.toString().trim().split(" ")
+            input1.setText(nameParts[0])
+            input2.setText(nameParts[1])
+
+            AlertDialog.Builder(this)
+                .setTitle("Edit Name")
+                .setView(dialogView)
+                .setPositiveButton("Save") { dialog, _ ->
+                    val newFName = input1.text.toString().trim()
+                    val newLName = input2.text.toString().trim()
+                    val fullName = "$newFName $newLName"
+                    if (newFName.isNotEmpty()) {
+                        updateInFirestore(fullName, "name")
+                        nameText.text = fullName
+                    }
+                }
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.cancel()
+                }
+                .show()
+        }
+
+        emailText.setOnClickListener {
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog1, null)
+            val input = dialogView.findViewById<EditText>(R.id.input)
+            input.hint = "Email"
+            input.setText(emailText.text)
+            AlertDialog.Builder(this)
+                .setTitle("Edit Email")
+                .setView(dialogView)
+                .setPositiveButton("Save") { dialog, _ ->
+                    val newEmail = input.text.toString().trim()
+                    if (newEmail.isNotEmpty()) {
+                        updateInFirestore(newEmail, "email")
+                        emailText.text = newEmail
+                    }
+                }
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.cancel()
+                }
+                .show()
+        }
+
+        phoneText.setOnClickListener {
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog1, null)
+            val input = dialogView.findViewById<EditText>(R.id.input)
+            input.hint = "Phone Number"
+            input.setText(phoneText.text)
+            AlertDialog.Builder(this)
+                .setTitle("Edit Phone Number")
+                .setView(dialogView)
+                .setPositiveButton("Save") { dialog, _ ->
+                    val newPhone = input.text.toString().trim()
+                    if (newPhone.isNotEmpty()) {
+                        updateInFirestore(newPhone, "phone")
+                        phoneText.text = newPhone
+                    }
+                }
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.cancel()
+                }
+                .show()
+        }
+
+        passwordText.setOnClickListener {
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog2, null)
+            val input1 = dialogView.findViewById<EditText>(R.id.input_1)
+            val input2 = dialogView.findViewById<EditText>(R.id.input_2)
+            input1.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            input2.inputType = input1.inputType
+            input1.hint = "New Password"
+            input2.hint = "Confirm New Password"
+
+            AlertDialog.Builder(this)
+                .setTitle("Change Password")
+                .setView(dialogView)
+                .setPositiveButton("Save") { dialog, _ ->
+                    val newPW = input1.text.toString().trim()
+                    if (newPW == input2.text.toString().trim()) {
+                        currentUser?.updatePassword(newPW)
+                            ?.addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    // Password updated successfully
+                                    Toast.makeText(this, "Password updated successfully", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    // Handle error (e.g., weak password)
+                                    Toast.makeText(this, "Error updating password", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                    }
+                    else {
+                        Toast.makeText(this, "Password inputs do not match", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.cancel()
+                }
+                .show()
+        }
+
         emergencyContactButton.setOnClickListener {
             val intent = Intent(this, EmergencyContactActivity::class.java)
             startActivity(intent)
         }
-        backButton.setOnClickListener {
-            finish()
+
+        logoutButton.setOnClickListener {
+            auth.signOut()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
-
-        setupLocationButtons()
-        loadUserData()
-        loadLastLocationFromFirestore()
-    }
-
-    private fun loadUserData() {
-        db.collection("users").document(userId).get()
-            .addOnSuccessListener { document ->
-                if (document != null && document.exists()) {
-                    val fullName = document.getString("name") ?: "User"
-                    nameText.text = fullName
-                    emailText.text = document.getString("email") ?: "Not provided"
-                    phoneText.text = document.getString("phone") ?: "Not provided"
-                    dobText.text = document.getString("dob") ?: "Not provided"
-                    passwordText.text = "*************" // Never show real password
-                }
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Error loading user data: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-    }
-
-    private fun navigateToLogin() {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
-        finish()
     }
 
     private fun updateInFirestore(newStr: String, field: String) {
@@ -137,102 +199,6 @@ class Account : AppCompatActivity() {
                 .addOnFailureListener { e ->
                     // Handle error
                 }
-        }
-    }
-
-    private fun setupLocationButtons() {
-        shareLocationButton.setOnClickListener {
-            checkLocationPermissionAndFetchLocation { location, address ->
-                shareLocation(location, address)
-            }
-        }
-        viewDoctorLocationButton.setOnClickListener {
-            viewDoctorLocation()
-        }
-    }
-
-    private fun checkLocationPermissionAndFetchLocation(onLocationReady: (Location, String) -> Unit) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST)
-            return
-        }
-        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-            if (location != null) {
-                val geocoder = Geocoder(this, Locale.getDefault())
-                val addresses: List<Address>? = geocoder.getFromLocation(location.latitude, location.longitude, 1)
-                val address = addresses?.firstOrNull()?.getAddressLine(0) ?: "Lat: ${location.latitude}, Lng: ${location.longitude}"
-                lastLocation = location
-                lastAddress = address
-                lastLocationTimestamp = System.currentTimeMillis()
-                updateLastLocationUI(location, address, lastLocationTimestamp!!)
-                saveLastLocationToFirestore(location, address, lastLocationTimestamp!!)
-                onLocationReady(location, address)
-            } else {
-                Toast.makeText(this, "Unable to get location", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == LOCATION_PERMISSION_REQUEST) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Try again if permission granted
-                checkLocationPermissionAndFetchLocation { _, _ -> }
-            } else {
-                Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    private fun shareLocation(location: Location, address: String) {
-        val uri = "https://maps.google.com/?q=${location.latitude},${location.longitude}"
-        val shareText = "My current location: $address\n$uri"
-        val intent = Intent(Intent.ACTION_SEND)
-        intent.type = "text/plain"
-        intent.putExtra(Intent.EXTRA_TEXT, shareText)
-        startActivity(Intent.createChooser(intent, "Share Location"))
-    }
-
-    private fun viewDoctorLocation() {
-        // For demo: hardcoded doctor location. In production, fetch from Firestore or user profile.
-        val doctorLat = 23.8103
-        val doctorLng = 90.4125
-        val doctorLabel = "Doctor's Office"
-        val gmmIntentUri = Uri.parse("geo:$doctorLat,$doctorLng?q=$doctorLat,$doctorLng($doctorLabel)")
-        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-        mapIntent.setPackage("com.google.android.apps.maps")
-        if (mapIntent.resolveActivity(packageManager) != null) {
-            startActivity(mapIntent)
-        } else {
-            Toast.makeText(this, "Google Maps not available", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun updateLastLocationUI(location: Location, address: String, timestamp: Long) {
-        val sdf = SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault())
-        val timeString = sdf.format(Date(timestamp))
-        lastLocationText.text = "Last known location: $address\n($timeString)"
-    }
-
-    private fun saveLastLocationToFirestore(location: Location, address: String, timestamp: Long) {
-        val locationData = mapOf(
-            "latitude" to location.latitude,
-            "longitude" to location.longitude,
-            "address" to address,
-            "timestamp" to timestamp
-        )
-        db.collection("users").document(userId).update("lastLocation", locationData)
-    }
-
-    private fun loadLastLocationFromFirestore() {
-        db.collection("users").document(userId).get().addOnSuccessListener { document ->
-            val loc = document.get("lastLocation") as? Map<*, *>
-            if (loc != null) {
-                val address = loc["address"] as? String ?: "Unknown"
-                val timestamp = (loc["timestamp"] as? Number)?.toLong() ?: 0L
-                lastLocationText.text = "Last known location: $address\n(${SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault()).format(Date(timestamp))})"
-            }
         }
     }
 }
