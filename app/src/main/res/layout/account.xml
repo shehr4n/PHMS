@@ -162,6 +162,15 @@
                     android:textColor="@color/black"
                     android:textSize="24sp" />
 
+                <Button
+                    android:id="@+id/emergencyContactButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Manage Emergency Contact"
+                    android:drawableStart="@android:drawable/ic_dialog_alert"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"/>
+
                 <TextView
                     android:id="@+id/logout_button"
                     android:layout_width="wrap_content"
