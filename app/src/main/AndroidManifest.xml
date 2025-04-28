@@ -4,7 +4,11 @@
     package="com.example.phms">
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
 
     <application
@@ -33,6 +37,7 @@
         <activity android:name=".Registration2" />
         <activity android:name=".HomePage" />
         <activity android:name=".Account" />
+        <activity android:name=".EmergencyContactActivity" />
         <activity
             android:name=".Vitals"
             android:exported="true" />
@@ -46,7 +51,20 @@
         <activity android:name=".Notes" />
         <activity android:name=".Search" />
 
-        <receiver android:name=".ReminderReceiver" />
+        <activity android:name=".MedicationConfirmationActivity" 
+            android:theme="@style/Theme.AppCompat.Dialog"/>
+
+        <receiver android:name=".ReminderReceiver" 
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="com.example.phms.MEDICATION_REMINDER" />
+                <action android:name="com.example.phms.MEDICATION_TIMEOUT" />
+                <action android:name="com.example.phms.MEDICATION_CONFLICT" />
+                <action android:name="com.example.phms.TAKE_MEDICATION" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
