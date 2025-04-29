@@ -182,6 +182,21 @@
                     android:textColor="@color/black"
                     android:textSize="24sp" />
 
+
+                <TextView
+                    android:id="@+id/appointments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/rounded_corner_2"
+                    android:backgroundTint="#fda4af"
+                    android:gravity="center"
+                    android:padding="24dp"
+                    android:text="Appointments"
+                    android:textColor="@color/black"
+                    android:textSize="24sp" />
+
+
             </LinearLayout>
         </ScrollView>
 

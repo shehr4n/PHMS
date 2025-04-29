@@ -28,6 +28,7 @@ class HomePage : AppCompatActivity() {
     lateinit var  dietButton: TextView
     lateinit var  searchButton: TextView
     lateinit var communicationButton: TextView
+    lateinit var appointmentsButton: TextView
 
 
 
@@ -55,6 +56,7 @@ class HomePage : AppCompatActivity() {
         dietButton = findViewById(R.id.placeholder3)
         searchButton = findViewById(R.id.placeholder5)
         communicationButton = findViewById(R.id.communicationTextView)
+        appointmentsButton = findViewById(R.id.appointments)
 
 
         auth = FirebaseAuth.getInstance()
@@ -110,6 +112,11 @@ class HomePage : AppCompatActivity() {
         }
         communicationButton.setOnClickListener {
             val intent = Intent(this, Communication::class.java)
+            startActivity(intent)
+        }
+
+        appointmentsButton.setOnClickListener {
+            val intent = Intent(this, AppointmentActivity::class.java)
             startActivity(intent)
         }
 

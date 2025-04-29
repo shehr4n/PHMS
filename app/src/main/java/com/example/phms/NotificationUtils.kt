@@ -13,6 +13,7 @@ object NotificationUtils {
     const val REMINDER_CHANNEL_ID = "medication_reminder_channel"
     const val TIMEOUT_CHANNEL_ID = "medication_timeout_channel"
     const val CONFLICT_CHANNEL_ID = "medication_conflict_channel"
+    const val APPOINTMENT_CHANNEL_ID = "appointment_reminder_channel"
 
     fun createNotificationChannels(context: Context) {
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -50,8 +51,24 @@ object NotificationUtils {
                 enableVibration(true)
                 enableLights(true)
             }
+
+            // Appointment Channel
+            val appointmentChannel = NotificationChannel(
+                APPOINTMENT_CHANNEL_ID,
+                "Appointment Reminders",
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                description = "Reminds you about upcoming appointments"
+                enableVibration(true)
+                enableLights(true)
+            }
             
-            manager.createNotificationChannels(listOf(reminderChannel, timeoutChannel, conflictChannel))
+            manager.createNotificationChannels(listOf(
+                reminderChannel, 
+                timeoutChannel, 
+                conflictChannel,
+                appointmentChannel
+            ))
         }
     }
 
@@ -190,6 +207,45 @@ object NotificationUtils {
             .build()
 
         val notificationId = "conflict_${medicationName}".hashCode()
+        manager.notify(notificationId, notification)
+    }
+    
+    fun showAppointmentReminder(
+        context: Context,
+        appointmentId: String,
+        title: String,
+        doctorName: String,
+        location: String
+    ) {
+        val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        createNotificationChannels(context)
+        
+        // Create intent to open the app
+        val openIntent = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            putExtra("APPOINTMENT_ID", appointmentId)
+        }
+        
+        val openPendingIntent = PendingIntent.getActivity(
+            context,
+            "appointment_$appointmentId".hashCode(),
+            openIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val notification = NotificationCompat.Builder(context, APPOINTMENT_CHANNEL_ID)
+            .setSmallIcon(android.R.drawable.ic_dialog_info)
+            .setContentTitle("Upcoming Appointment")
+            .setContentText("$title with $doctorName")
+            .setStyle(NotificationCompat.BigTextStyle()
+                .bigText("You have an appointment with $doctorName in 1 hour.\nLocation: $location"))
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setCategory(NotificationCompat.CATEGORY_EVENT)
+            .setContentIntent(openPendingIntent)
+            .setAutoCancel(true)
+            .build()
+
+        val notificationId = "appointment_$appointmentId".hashCode()
         manager.notify(notificationId, notification)
     }
     
