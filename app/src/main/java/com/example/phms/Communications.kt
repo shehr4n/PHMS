@@ -1,28 +1,44 @@
 package com.example.phms
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.example.phms.model.Doctor
+import com.example.phms.service.LocationService
 import java.util.*
 
-class Communication : AppCompatActivity() {
+class Communication : AppCompatActivity(){
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private lateinit var doctorList: RecyclerView
     private lateinit var addDoctorButton: Button
     private lateinit var call911Button: Button
+    private lateinit var shareLocationButton: Button
     private lateinit var adapter: DoctorAdapter
+    private lateinit var map: GoogleMap
     private val doctors = mutableListOf<Doctor>()
     lateinit var backButton: ImageView
+    private val LOCATION_PERMISSION_REQUEST_CODE = 1001
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,10 +50,16 @@ class Communication : AppCompatActivity() {
         doctorList = findViewById(R.id.doctorList)
         addDoctorButton = findViewById(R.id.addDoctorButton)
         call911Button = findViewById(R.id.call911Button)
+        shareLocationButton = findViewById(R.id.shareLocationButton)
+
+        // Setup map
+        //val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        //mapFragment.getMapAsync(this)
 
         adapter = DoctorAdapter(doctors,
             onCall = { callDoctor(it.phone) },
-            onEmail = { emailDoctor(it.email) }
+            onEmail = { emailDoctor(it.email) },
+            onLocation = { showDoctorLocation(it) }
         )
         doctorList.layoutManager = LinearLayoutManager(this)
         doctorList.adapter = adapter
@@ -52,6 +74,10 @@ class Communication : AppCompatActivity() {
             startActivity(intent)
         }
 
+        shareLocationButton.setOnClickListener {
+            checkLocationPermission()
+        }
+
         loadDoctors()
 
         backButton = findViewById(R.id.back_button)
@@ -61,6 +87,52 @@ class Communication : AppCompatActivity() {
         }
     }
 
+    private fun checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST_CODE
+            )
+        } else {
+            startLocationService()
+        }
+    }
+
+    private fun startLocationService() {
+        val serviceIntent = Intent(this, LocationService::class.java)
+        startService(serviceIntent)
+        Toast.makeText(this, "Location sharing started", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showDoctorLocation(doctor: Doctor) {
+        val uri = Uri.parse("geo:0,0?q=" + Uri.encode(doctor.address))
+        Intent(Intent.ACTION_VIEW, uri).apply {
+            setPackage("com.google.android.apps.maps")
+        }.let { intent ->
+            if (intent.resolveActivity(packageManager) != null) {
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "No map app found", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    /*
+    override fun onMapReady(googleMap: GoogleMap) {
+        map = googleMap
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            map.isMyLocationEnabled = true
+        }
+    }*/
     private fun callDoctor(phone: String) {
         val intent = Intent(Intent.ACTION_DIAL)
         intent.data = Uri.parse("tel:$phone")

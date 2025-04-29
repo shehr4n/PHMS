@@ -46,6 +46,7 @@ class Medications : AppCompatActivity() {
     private lateinit var testReminderButton: Button
     private lateinit var adapter: MedicationAdapter
     private val medications = mutableListOf<Medication>()
+    lateinit var backButton: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +80,12 @@ class Medications : AppCompatActivity() {
         }
 
         loadMedications()
+
+        backButton = findViewById(R.id.back_button)
+        backButton.setOnClickListener {
+            val intent = Intent(this, HomePage::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun sendTestReminder() {

@@ -6,11 +6,13 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.phms.model.Doctor
 
 class DoctorAdapter(
-    private var doctors: List<Doctor>,
+    private val doctors: List<Doctor>,
     private val onCall: (Doctor) -> Unit,
-    private val onEmail: (Doctor) -> Unit
+    private val onEmail: (Doctor) -> Unit,
+    private val onLocation: (Doctor) -> Unit
 ) : RecyclerView.Adapter<DoctorAdapter.DoctorViewHolder>() {
 
     class DoctorViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -18,8 +20,9 @@ class DoctorAdapter(
         val phoneText: TextView = view.findViewById(R.id.doctorPhoneText)
         val emailText: TextView = view.findViewById(R.id.doctorEmailText)
         val addressText: TextView = view.findViewById(R.id.doctorAddressText)
-        val callBtn: ImageButton = view.findViewById(R.id.callButton)
-        val emailBtn: ImageButton = view.findViewById(R.id.emailButton)
+        val callButton: ImageButton = view.findViewById(R.id.callButton)
+        val emailButton: ImageButton = view.findViewById(R.id.emailButton)
+        val locationButton: ImageButton = view.findViewById(R.id.locationButton)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DoctorViewHolder {
@@ -35,8 +38,9 @@ class DoctorAdapter(
         holder.emailText.text = "Email: ${doctor.email}"
         holder.addressText.text = "Address: ${doctor.address}"
 
-        holder.callBtn.setOnClickListener { onCall(doctor) }
-        holder.emailBtn.setOnClickListener { onEmail(doctor) }
+        holder.callButton.setOnClickListener { onCall(doctor) }
+        holder.emailButton.setOnClickListener { onEmail(doctor) }
+        holder.locationButton.setOnClickListener { onLocation(doctor) }
     }
 
     override fun getItemCount() = doctors.size
