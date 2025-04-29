@@ -2,6 +2,7 @@ package com.example.phms
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -33,6 +34,7 @@ class AppointmentActivity : AppCompatActivity() {
     private val upcomingAppointments = mutableListOf<Appointment>()
     private val pastAppointments = mutableListOf<Appointment>()
     private val dateFormat = SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault())
+    lateinit var backButton: ImageView
 
     private val db = FirebaseFirestore.getInstance()
 
@@ -49,6 +51,12 @@ class AppointmentActivity : AppCompatActivity() {
         setupAddButton()
 
         observeAllAppointments()
+
+        backButton = findViewById(R.id.back_button)
+        backButton.setOnClickListener {
+            val intent = Intent(this, HomePage::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setupRecyclerViews() {

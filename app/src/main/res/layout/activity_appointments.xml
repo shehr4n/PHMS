@@ -2,24 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/headerLayout"
+        layout="@layout/header"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Appointments"
-        android:textSize="24sp"
+        android:textSize="40sp"
+        android:textColor="@color/black"
         android:textStyle="bold"
         android:gravity="center"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginVertical="24dp" />
 
     <Button
         android:id="@+id/addAppointmentButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Add Appointment"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="16dp"
+        android:layout_marginHorizontal="16dp"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -27,14 +32,16 @@
         android:text="Upcoming Appointments"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="8dp"
+        android:layout_marginHorizontal="16dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/upcomingAppointmentsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="16dp"
+        android:layout_marginHorizontal="16dp"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -42,12 +49,14 @@
         android:text="Past Appointments"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="8dp"
+        android:layout_marginHorizontal="16dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/pastAppointmentsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:layout_marginHorizontal="16dp"/>
 
 </LinearLayout> 
