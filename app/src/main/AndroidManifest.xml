@@ -64,7 +64,7 @@
         <activity android:name=".MedicationConfirmationActivity" 
             android:theme="@style/Theme.AppCompat.Dialog"/>
         <service
-            android:name=".LocationService"
+            android:name=".service.LocationService"
             android:exported="false" />
 
 
