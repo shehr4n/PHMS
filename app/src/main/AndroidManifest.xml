@@ -50,6 +50,8 @@
 
         <activity android:name=".Notes" />
         <activity android:name=".Search" />
+        <activity android:name=".Communication" />
+
 
         <activity android:name=".MedicationConfirmationActivity" 
             android:theme="@style/Theme.AppCompat.Dialog"/>

@@ -27,6 +27,9 @@ class HomePage : AppCompatActivity() {
     lateinit var  notesButton: TextView
     lateinit var  dietButton: TextView
     lateinit var  searchButton: TextView
+    lateinit var communicationButton: TextView
+
+
 
     lateinit var auth: FirebaseAuth
     var db = FirebaseFirestore.getInstance()
@@ -51,6 +54,8 @@ class HomePage : AppCompatActivity() {
         notesButton = findViewById(R.id.notes)
         dietButton = findViewById(R.id.placeholder3)
         searchButton = findViewById(R.id.placeholder5)
+        communicationButton = findViewById(R.id.communicationTextView)
+
 
         auth = FirebaseAuth.getInstance()
 
@@ -103,6 +108,11 @@ class HomePage : AppCompatActivity() {
             val intent = Intent(this, Search::class.java)
             startActivity(intent)
         }
+        communicationButton.setOnClickListener {
+            val intent = Intent(this, Communication::class.java)
+            startActivity(intent)
+        }
+
     }
 
     fun calculateAge(dob: String): Int {
