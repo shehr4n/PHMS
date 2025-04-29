@@ -11,10 +11,15 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class HomePage : AppCompatActivity() {
 
     lateinit var  nameText: TextView
+    lateinit var ageText: TextView
+    lateinit var genderText: TextView
     lateinit var accountButton: ImageView
 
     lateinit var  vitalButton: TextView
@@ -37,6 +42,8 @@ class HomePage : AppCompatActivity() {
         }
 
         nameText = findViewById(R.id.nameText)
+        ageText = findViewById(R.id.ageText)
+        genderText = findViewById(R.id.genderText)
         accountButton = findViewById(R.id.account_button)
 
         vitalButton = findViewById(R.id.vital_signs)
@@ -54,9 +61,11 @@ class HomePage : AppCompatActivity() {
                 .addOnSuccessListener { document ->
                     if (document.exists()) {
                         val name = document.getString("name") ?: "User"
+                        val dob = document.getString("dob") ?: "1/1/2000"
+                        val gender = document.getString("gender") ?: "O"
                         nameText.text = name
-                    } else {
-                        nameText.text = "User"
+                        ageText.text = calculateAge(dob).toString()
+                        genderText.text = gender[0].toString()
                     }
                 }
                 /* .addOnFailureListener { e ->
@@ -94,5 +103,22 @@ class HomePage : AppCompatActivity() {
             val intent = Intent(this, Search::class.java)
             startActivity(intent)
         }
+    }
+
+    fun calculateAge(dob: String): Int {
+        val sdf = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+        val birthDate = sdf.parse(dob) ?: return 0
+        val today = Calendar.getInstance()
+
+        val birth = Calendar.getInstance()
+        birth.time = birthDate
+
+        var age = today.get(Calendar.YEAR) - birth.get(Calendar.YEAR)
+
+        if (today.get(Calendar.DAY_OF_YEAR) < birth.get(Calendar.DAY_OF_YEAR)) {
+            age--
+        }
+
+        return age
     }
 }
