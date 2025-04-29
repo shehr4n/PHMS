@@ -168,7 +168,7 @@
                     android:textSize="24sp" />
 
                 <TextView
-                    android:id="@+id/placeholder6"
+                    android:id="@+id/communicationTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -176,7 +176,7 @@
                     android:backgroundTint="#c4b5fd"
                     android:gravity="center"
                     android:padding="24dp"
-                    android:text="Placeholder"
+                    android:text="Communication"
                     android:textColor="@color/black"
                     android:textSize="24sp" />
 
