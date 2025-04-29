@@ -1,5 +1,6 @@
 package com.example.phms
 
+import com.google.firebase.firestore.GeoPoint
 import java.util.*
 
 data class Doctor(
@@ -7,5 +8,6 @@ data class Doctor(
     val name: String = "",
     val phone: String = "",
     val email: String = "",
-    val address: String = ""
+    val address: String = "",
+    val location: GeoPoint = GeoPoint(0.0, 0.0)
 )
