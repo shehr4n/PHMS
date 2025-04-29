@@ -1,3 +1,12 @@
+import java.util.Properties
+
+// 1) Load local.properties
+val localProps = Properties().apply {
+    load(rootProject.file("local.properties").inputStream())
+}
+
+// 2) Pull out your key
+val mapsApiKey: String = localProps.getProperty("MAPS_API_KEY", "")
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -17,6 +26,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders["GOOGLE_MAPS_API_KEY"] = mapsApiKey
+        buildConfigField("String", "MAPS_API_KEY", "\"$mapsApiKey\"")
     }
 
     buildTypes {
