@@ -6,12 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_background"
-    android:gravity="center"
-    android:padding="32dp"
     tools:context=".MainActivity">
 
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="32dp"
         android:gravity="center"
         android:orientation="vertical">
 

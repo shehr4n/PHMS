@@ -7,13 +7,13 @@
     android:layout_height="match_parent"
     android:background="@drawable/login_background"
     android:gravity="center"
-    android:padding="32dp"
     tools:context=".MainActivity">
 
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginHorizontal="32dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -23,18 +23,42 @@
             android:textSize="48sp"
             android:textStyle="bold"/>
 
-        <Spinner
-            android:id="@+id/gender_spinner"
+        <RadioGroup
+            android:id="@+id/gender_radio_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:background="@drawable/rounded_corner"
-            android:paddingHorizontal="18dp"
-            android:paddingVertical="10dp"
-            android:spinnerMode="dropdown"
-            android:popupBackground="@color/white"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark"
-            android:entries="@array/gender_options"/>
+            android:orientation="horizontal"
+            android:layout_marginTop="32dp">
+
+            <RadioButton
+                android:id="@+id/maleButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Male"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:buttonTint="@color/white"/>
+
+            <RadioButton
+                android:id="@+id/femaleButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Female"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <RadioButton
+                android:id="@+id/otherButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Other"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+        </RadioGroup>
 
 
         <EditText
@@ -52,19 +76,62 @@
             android:id="@+id/DOB"
             android:focusable="false"/>
 
-        <EditText
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="Height"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="20sp"
-            android:background="@drawable/rounded_corner"
-            android:paddingHorizontal="18dp"
-            android:paddingVertical="10dp"
-            android:inputType="number"
-            android:id="@+id/height"/>
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Height:"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:layout_marginRight="12dp"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:minWidth="64dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:background="@drawable/rounded_corner"
+                android:paddingHorizontal="18dp"
+                android:paddingVertical="10dp"
+                android:inputType="number"
+                android:id="@+id/height_ft"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="feet"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="12dp"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:minWidth="64dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:background="@drawable/rounded_corner"
+                android:paddingHorizontal="18dp"
+                android:paddingVertical="10dp"
+                android:inputType="number"
+                android:id="@+id/height_in"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="inches"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:layout_marginLeft="8dp"/>
+
+        </LinearLayout>
 
         <EditText
             android:id="@+id/weight"

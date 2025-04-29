@@ -1,8 +1,10 @@
 package com.example.phms
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +23,7 @@ class EmergencyContactActivity : AppCompatActivity() {
     private val db = FirebaseFirestore.getInstance()
     private val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
     private val TAG = "EmergencyContactActivity"
+    lateinit var backButton: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +31,7 @@ class EmergencyContactActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.contactsRecyclerView)
         addContactFab = findViewById(R.id.addContactFab)
+        backButton = findViewById(R.id.back_button)
         
         // Setup RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -42,6 +46,11 @@ class EmergencyContactActivity : AppCompatActivity() {
         // Set up Add button
         addContactFab.setOnClickListener {
             showAddContactDialog()
+        }
+
+        backButton.setOnClickListener {
+            val intent = Intent(this, Account::class.java)
+            startActivity(intent)
         }
 
         // Load contacts from Firestore

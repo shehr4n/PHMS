@@ -51,7 +51,20 @@ class Registration : AppCompatActivity() {
         registerButton.setOnClickListener {
             val email = emailInput.text.toString()
             val password = passwordInput.text.toString()
+            val password2 = confirmPasswordInput.text.toString()
             val name = "${fnameInput.text.toString()} ${lnameInput.text.toString()}"
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Email and password required", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                Toast.makeText(this, "Invalid email.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (password != password2) {
+                Toast.makeText(this, "Password inputs do not match", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
@@ -65,7 +78,6 @@ class Registration : AppCompatActivity() {
                                 "name" to name,
                                 "phone" to phoneInput.text.toString(),
                                 "email" to email,
-
                             )
 
                             db.collection("users")
@@ -90,7 +102,7 @@ class Registration : AppCompatActivity() {
                         // Display message to user
                         Toast.makeText(
                             baseContext,
-                            "Authentication failed.",
+                            "Registration failed.",
                             Toast.LENGTH_SHORT,
                         ).show()
                     }
