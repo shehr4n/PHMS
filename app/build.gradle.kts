@@ -17,6 +17,11 @@ plugins {
 android {
     namespace = "com.example.phms"
     compileSdk = 35
+    buildFeatures {
+        // ← enable BuildConfig so your buildConfigField() calls work
+        buildConfig = true
+    }
+
 
     defaultConfig {
         applicationId = "com.example.phms"
@@ -28,6 +33,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders["GOOGLE_MAPS_API_KEY"] = mapsApiKey
         buildConfigField("String", "MAPS_API_KEY", "\"$mapsApiKey\"")
+
     }
 
     buildTypes {
