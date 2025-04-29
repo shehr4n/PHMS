@@ -22,6 +22,7 @@ class Communication : AppCompatActivity() {
     private lateinit var call911Button: Button
     private lateinit var adapter: DoctorAdapter
     private val doctors = mutableListOf<Doctor>()
+    lateinit var backButton: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +53,12 @@ class Communication : AppCompatActivity() {
         }
 
         loadDoctors()
+
+        backButton = findViewById(R.id.back_button)
+        backButton.setOnClickListener {
+            val intent = Intent(this, HomePage::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun callDoctor(phone: String) {

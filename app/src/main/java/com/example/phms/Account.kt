@@ -1,5 +1,6 @@
 package com.example.phms
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -17,12 +18,14 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.Calendar
 
 class Account : AppCompatActivity() {
 
     lateinit var  nameText: TextView
     lateinit var  emailText: TextView
     lateinit var  phoneText: TextView
+    lateinit var  dobText: TextView
     lateinit var  passwordText: TextView
     lateinit var logoutButton: Button
     lateinit var backButton: ImageView
@@ -44,10 +47,12 @@ class Account : AppCompatActivity() {
         nameText = findViewById(R.id.nameText)
         emailText = findViewById(R.id.emailText)
         phoneText = findViewById(R.id.phoneText)
+        dobText = findViewById(R.id.dob)
         passwordText = findViewById(R.id.passwordText)
         logoutButton = findViewById(R.id.logout_button)
         backButton = findViewById(R.id.back_button)
         emergencyContactButton = findViewById(R.id.emergencyContactButton)
+        var date = ""
 
         auth = FirebaseAuth.getInstance()
 
@@ -62,6 +67,8 @@ class Account : AppCompatActivity() {
                     emailText.text = email
                     val phone = document.getString("phone") ?: "User"
                     phoneText.text = phone
+                    val dob = document.getString("dob") ?: "User"
+                    dobText.text = dob
                 }
         }
 
@@ -138,6 +145,22 @@ class Account : AppCompatActivity() {
                     dialog.cancel()
                 }
                 .show()
+        }
+
+        dobText.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+            val datePickerDialog = DatePickerDialog(this,
+                { _, selectedYear, selectedMonth, selectedDay ->
+                    date = "${selectedMonth + 1}/$selectedDay/$selectedYear"
+                    updateInFirestore(date, "dob")
+                    dobText.setText(date)
+                }, year, month, day)
+
+            datePickerDialog.show()
         }
 
         passwordText.setOnClickListener {

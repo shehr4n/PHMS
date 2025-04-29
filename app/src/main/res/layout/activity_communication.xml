@@ -4,18 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
     android:background="#FFF9FF">
+
+    <include
+        android:id="@+id/headerLayout"
+        layout="@layout/header"/>
 
     <TextView
         android:id="@+id/communicationTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Doctor Contacts"
-        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:textSize="40sp"
         android:textStyle="bold"
         android:gravity="center"
-        android:padding="8dp" />
+        android:layout_marginVertical="24dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
