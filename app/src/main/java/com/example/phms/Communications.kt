@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -186,16 +187,60 @@ class Communication : AppCompatActivity(){
             .setNegativeButton("Cancel", null)
             .show()
     }
+/*private fun showAddDoctorDialog() {
+    val dialogView = LayoutInflater.from(this)
+        .inflate(R.layout.dialog_add_doctor, null)
+    val nameInput    = dialogView.findViewById<EditText>(R.id.doctorName)
+    val phoneInput   = dialogView.findViewById<EditText>(R.id.doctorPhone)
+    val emailInput   = dialogView.findViewById<EditText>(R.id.doctorEmail)
+    val addressInput = dialogView.findViewById<EditText>(R.id.doctorAddress)
+
+    AlertDialog.Builder(this)
+        .setTitle("Add Doctor")
+        .setView(dialogView)
+        .setPositiveButton("Save") { _, _ ->
+            try {
+                // Validate
+                if (nameInput.text.isNullOrBlank()) {
+                    nameInput.error = "Name required"
+                    return@setPositiveButton
+                }
+                // Build your Doctor
+                val doctor = Doctor(
+                    name    = nameInput.text.toString().trim(),
+                    phone   = phoneInput.text.toString().trim(),
+                    email   = emailInput.text.toString().trim(),
+                    address = addressInput.text.toString().trim()
+                )
+                // This is the only place we call saveDoctor
+                saveDoctor(doctor)
+            } catch (e: Exception) {
+                // Catch ANY exception here and show it
+                Log.e("Communication", "Error in Save button", e)
+                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        }
+        .setNegativeButton("Cancel", null)
+        .show()
+}*/
 
     private fun saveDoctor(doctor: Doctor) {
         val user = auth.currentUser ?: return
-        db.collection("users").document(user.uid)
+        val docRef = db.collection("users")
+            .document(user.uid)
             .collection("doctors")
-            .document(doctor.id)
-            .set(doctor)
+            .document() // generate a new document reference with a unique ID
+
+        val doctorWithId = doctor.copy(id = docRef.id)
+
+        docRef.set(doctorWithId)
             .addOnSuccessListener {
                 loadDoctors()
                 Toast.makeText(this, "Doctor added", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Failed to add doctor: ${e.message}", Toast.LENGTH_LONG).show()
+                Log.e("Communication", "saveDoctor failed", e)
             }
     }
 }

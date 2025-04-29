@@ -24,7 +24,7 @@ class Search : AppCompatActivity() {
     private lateinit var noResultsTextView: TextView
     lateinit var backButton: ImageView
     
-    private val categories = arrayOf("Appointments", "Medications")
+    private val categories = arrayOf( "Medications")
     private val timeframes = arrayOf("Current", "Past", "All")
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,7 +87,6 @@ class Search : AppCompatActivity() {
 
         when (category) {
             "Medications" -> searchMedications(currentUser.uid, timeframe, searchQuery)
-            "Appointments" -> searchAppointments(currentUser.uid, timeframe, searchQuery)
         }
     }
 
@@ -143,51 +142,7 @@ class Search : AppCompatActivity() {
             }
     }
 
-    private fun searchAppointments(userId: String, timeframe: String, query: String) {
-        val currentDate = Date()
-        
-        db.collection("users")
-            .document(userId)
-            .collection("appointments")
-            .get()
-            .addOnSuccessListener { documents ->
-                val appointments = documents.mapNotNull { doc ->
-                    val title = doc.getString("title") ?: return@mapNotNull null
-                    val date = doc.getDate("date") ?: return@mapNotNull null
-                    val description = doc.getString("description") ?: ""
-                    
-                    // Filter based on timeframe
-                    when (timeframe) {
-                        "Current" -> {
-                            if (date.before(currentDate)) return@mapNotNull null
-                        }
-                        "Past" -> {
-                            if (date.after(currentDate)) return@mapNotNull null
-                        }
-                    }
-                    
-                    // Filter based on search query
-                    if (query.isNotEmpty() && 
-                        !title.lowercase().contains(query) && 
-                        !description.lowercase().contains(query)) {
-                        return@mapNotNull null
-                    }
-                    
-                    SearchResult(
-                        id = doc.id,
-                        title = title,
-                        date = date,
-                        type = "Appointment",
-                        details = description
-                    )
-                }
-                
-                displayResults(appointments)
-            }
-            .addOnFailureListener {
-                Toast.makeText(this, "Error searching appointments", Toast.LENGTH_SHORT).show()
-            }
-    }
+
 
     private fun displayResults(results: List<SearchResult>) {
         if (results.isEmpty()) {
@@ -204,10 +159,7 @@ class Search : AppCompatActivity() {
                         // Navigate to medication details
                         Toast.makeText(this, "Viewing medication: ${result.title}", Toast.LENGTH_SHORT).show()
                     }
-                    "Appointment" -> {
-                        // Navigate to appointment details
-                        Toast.makeText(this, "Viewing appointment: ${result.title}", Toast.LENGTH_SHORT).show()
-                    }
+
                 }
             }
             resultsRecyclerView.adapter = adapter
