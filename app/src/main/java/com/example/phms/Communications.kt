@@ -37,6 +37,7 @@ class Communication : AppCompatActivity(){
     private lateinit var adapter: DoctorAdapter
     private lateinit var map: GoogleMap
     private val doctors = mutableListOf<Doctor>()
+    lateinit var backButton: ImageView
     private val LOCATION_PERMISSION_REQUEST_CODE = 1001
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,6 +79,12 @@ class Communication : AppCompatActivity(){
         }
 
         loadDoctors()
+
+        backButton = findViewById(R.id.back_button)
+        backButton.setOnClickListener {
+            val intent = Intent(this, HomePage::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun checkLocationPermission() {
@@ -138,6 +145,7 @@ class Communication : AppCompatActivity(){
         }
         startActivity(intent)
     }
+
     private fun loadDoctors() {
         val user = auth.currentUser ?: return
         db.collection("users").document(user.uid)
@@ -178,6 +186,7 @@ class Communication : AppCompatActivity(){
             .setNegativeButton("Cancel", null)
             .show()
     }
+
     private fun saveDoctor(doctor: Doctor) {
         val user = auth.currentUser ?: return
         db.collection("users").document(user.uid)
@@ -189,6 +198,4 @@ class Communication : AppCompatActivity(){
                 Toast.makeText(this, "Doctor added", Toast.LENGTH_SHORT).show()
             }
     }
-
 }
-

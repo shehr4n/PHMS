@@ -1,5 +1,6 @@
 package com.example.phms
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -21,6 +22,7 @@ class Search : AppCompatActivity() {
     private lateinit var searchButton: Button
     private lateinit var resultsRecyclerView: RecyclerView
     private lateinit var noResultsTextView: TextView
+    lateinit var backButton: ImageView
     
     private val categories = arrayOf("Appointments", "Medications")
     private val timeframes = arrayOf("Current", "Past", "All")
@@ -49,6 +51,12 @@ class Search : AppCompatActivity() {
         // Setup search button
         searchButton.setOnClickListener {
             performSearch()
+        }
+
+        backButton = findViewById(R.id.back_button)
+        backButton.setOnClickListener {
+            val intent = Intent(this, HomePage::class.java)
+            startActivity(intent)
         }
     }
 

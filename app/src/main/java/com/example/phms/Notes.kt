@@ -1,5 +1,6 @@
 package com.example.phms
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.*
@@ -26,6 +27,7 @@ class Notes : AppCompatActivity() {
     private lateinit var addNoteButton: Button
     private lateinit var adapter: NotesAdapter
     private val notes = mutableListOf<Note>()
+    lateinit var backButton: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +51,12 @@ class Notes : AppCompatActivity() {
         }
 
         loadNotes()
+
+        backButton = findViewById(R.id.back_button)
+        backButton.setOnClickListener {
+            val intent = Intent(this, HomePage::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun loadNotes() {

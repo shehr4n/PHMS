@@ -1,6 +1,7 @@
 package com.example.phms
 
 //import android.content.Intent
+import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -35,6 +36,7 @@ class Vitals : AppCompatActivity() {
     private lateinit var dateFilter: EditText
     private lateinit var adapter: VitalsAdapter
     private val vitalSigns = mutableListOf<VitalSign>()
+    lateinit var backButton: ImageView
 
     // Normal ranges for different vital signs
     private val normalRanges = mapOf(
@@ -59,6 +61,12 @@ class Vitals : AppCompatActivity() {
         setupSpinner()
         setupListeners()
         loadVitalSigns()
+
+        backButton = findViewById(R.id.back_button)
+        backButton.setOnClickListener {
+            val intent = Intent(this, HomePage::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setupRecyclerView() {
