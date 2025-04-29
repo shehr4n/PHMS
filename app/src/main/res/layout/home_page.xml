@@ -183,7 +183,7 @@
                     android:textSize="24sp" />
 
                 <TextView
-                    android:id="@+id/placeholder7"
+                    android:id="@+id/appointments"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -191,7 +191,7 @@
                     android:backgroundTint="#fda4af"
                     android:gravity="center"
                     android:padding="24dp"
-                    android:text="Placeholder"
+                    android:text="Appointments"
                     android:textColor="@color/black"
                     android:textSize="24sp" />
 

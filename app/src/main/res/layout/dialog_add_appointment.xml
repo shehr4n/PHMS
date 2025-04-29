@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <EditText
+            android:id="@+id/appointmentTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Appointment Title"
+            android:inputType="text"
+            android:layout_marginBottom="12dp"/>
+
+        <EditText
+            android:id="@+id/appointmentDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Description"
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:layout_marginBottom="12dp"/>
+
+        <Button
+            android:id="@+id/selectDoctorButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Doctor"
+            android:layout_marginBottom="12dp"/>
+
+        <TextView
+            android:id="@+id/selectedDoctorText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No doctor selected"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/selectedDoctorAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="#666666"
+            android:layout_marginBottom="12dp"/>
+
+        <Button
+            android:id="@+id/selectDateTimeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Date and Time"
+            android:layout_marginBottom="12dp"/>
+
+        <TextView
+            android:id="@+id/selectedDateTimeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No date and time selected"
+            android:layout_marginBottom="12dp"/>
+
+    </LinearLayout>
+</ScrollView> 
