@@ -46,9 +46,13 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore.ktx)
+    implementation("com.google.android.gms:play-services-location:21.3.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
+    implementation("com.google.android.gms:play-services-maps:19.2.0")
+    // you already have play-services-location; leave that in too
+
 }
